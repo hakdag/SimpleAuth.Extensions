@@ -11,6 +11,10 @@ namespace SimpleAuthExtensions
             {
                 throw new InvalidOperationException("TokenValidationParameters must be provided in the options.");
             }
+            if (string.IsNullOrWhiteSpace(options.Secret))
+            {
+                throw new InvalidOperationException("Secret must be provided in the options.");
+            }
         }
     }
 }
