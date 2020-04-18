@@ -1,20 +1,20 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SimpleAuthExtensions
 {
-    public class OnlyManagersRequirement : IAuthorizationRequirement
+    public class SimpleRequirement : IAuthorizationRequirement
     {
+        public string[] Roles { get; set; }
     }
 
-    public class SimpleAuthorizationHandler : AuthorizationHandler<OnlyManagersRequirement>
+    public class SimpleAuthorizationHandler : AuthorizationHandler<SimpleRequirement>
     {
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, OnlyManagersRequirement requirement)
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, SimpleRequirement requirement)
         {
-            if (context.User.IsInRole("Manager"))
+            if (context.User.HasClaim(c => c.Type.EndsWith("/identity/claims/role") && requirement.Roles.Contains(c.Value)))
             {
                 context.Succeed(requirement);
             }

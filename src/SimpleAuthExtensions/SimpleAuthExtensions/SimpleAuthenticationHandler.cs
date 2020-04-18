@@ -60,7 +60,7 @@ namespace SimpleAuthExtensions
             {
                 //return ValidateToken(headerValue.Parameter);
                 var client = new AuthorizationClient(new System.Net.Http.HttpClient());
-                var result = await client.PostAsync(new AuthorizationModel { Token = headerValue.Parameter, Secret = Options.Secret });
+                var result = await client.PostAsync(new AuthorizationModel { Token = headerValue.Parameter });
                 if (result.IsAuthorized)
                 {
                     var ticket = GetTicket(result);
