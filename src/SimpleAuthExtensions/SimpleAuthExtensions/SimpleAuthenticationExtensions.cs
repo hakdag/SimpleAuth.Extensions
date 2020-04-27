@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using SimpleAuthExtensions.Service;
 using System;
 
 namespace SimpleAuthExtensions
@@ -30,6 +31,7 @@ namespace SimpleAuthExtensions
         {
             builder.Services.AddSingleton<IPostConfigureOptions<SimpleAuthenticationOptions>, SimpleAuthenticationPostConfigureOptions>();
             builder.Services.AddTransient<ISimpleAuthenticationService, TAuthService>();
+            builder.Services.AddHttpClient<IAuthorizationClient, AuthorizationClient>("AuthorizationClient");
 
             return builder.AddScheme<SimpleAuthenticationOptions, SimpleAuthenticationHandler>(
                 authenticationScheme, configureOptions);
