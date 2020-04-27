@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace SimpleAuthExtensions.Authentication
 {
-    public class SimpleAuthenticationHandler : AuthenticationHandler<SimpleAuthenticationOptions>
+    public class SimpleAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
         private const string AuthorizationHeaderName = "Authorization";
         private const string BearerSchemeName = "Bearer";
         private readonly ISimpleAuthorizationService authorizationService;
 
         public SimpleAuthenticationHandler(
-            IOptionsMonitor<SimpleAuthenticationOptions> options,
+            IOptionsMonitor<AuthenticationSchemeOptions> options,
             ILoggerFactory logger,
             UrlEncoder encoder,
             ISystemClock clock,

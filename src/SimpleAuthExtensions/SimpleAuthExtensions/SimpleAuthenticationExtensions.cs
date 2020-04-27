@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using SimpleAuthExtensions.Authentication;
 using SimpleAuthExtensions.Authorization;
 using SimpleAuthExtensions.Service;
@@ -10,33 +9,20 @@ namespace SimpleAuthExtensions
 {
     public static class SimpleAuthenticationExtensions
     {
+        private readonly static string authApiBaseAddress = "http://localhost:4000/";
+
         public static AuthenticationBuilder AddSimpleAuth<TAuthService>(this AuthenticationBuilder builder)
             where TAuthService : class, ISimpleAuthorizationService
         {
-            return AddSimpleAuth<TAuthService>(builder, SimpleAuthenticationDefaults.AuthenticationScheme, _ => { });
+            return AddSimpleAuth<TAuthService>(builder, new SimpleAuthenticationOptions { AuthApiBaseAddress = authApiBaseAddress });
         }
-
-        public static AuthenticationBuilder AddSimpleAuth<TAuthService>(this AuthenticationBuilder builder, string authenticationScheme)
+        public static AuthenticationBuilder AddSimpleAuth<TAuthService>(this AuthenticationBuilder builder, SimpleAuthenticationOptions simpleAuthenticationOptions)
             where TAuthService : class, ISimpleAuthorizationService
         {
-            return AddSimpleAuth<TAuthService>(builder, authenticationScheme, _ => { });
-        }
-
-        public static AuthenticationBuilder AddSimpleAuth<TAuthService>(this AuthenticationBuilder builder, Action<SimpleAuthenticationOptions> configureOptions)
-            where TAuthService : class, ISimpleAuthorizationService
-        {
-            return AddSimpleAuth<TAuthService>(builder, SimpleAuthenticationDefaults.AuthenticationScheme, configureOptions);
-        }
-
-        public static AuthenticationBuilder AddSimpleAuth<TAuthService>(this AuthenticationBuilder builder, string authenticationScheme, Action<SimpleAuthenticationOptions> configureOptions)
-            where TAuthService : class, ISimpleAuthorizationService
-        {
-            builder.Services.AddSingleton<IPostConfigureOptions<SimpleAuthenticationOptions>, SimpleAuthenticationPostConfigureOptions>();
             builder.Services.AddTransient<ISimpleAuthorizationService, TAuthService>();
-            builder.Services.AddHttpClient<IAuthorizationClient, AuthorizationClient>("AuthorizationClient");
+            builder.Services.AddHttpClient<IAuthorizationClient, AuthorizationClient>("AuthorizationClient", conf => conf.BaseAddress = new Uri(simpleAuthenticationOptions.AuthApiBaseAddress));
 
-            return builder.AddScheme<SimpleAuthenticationOptions, SimpleAuthenticationHandler>(
-                authenticationScheme, configureOptions);
+            return builder.AddScheme<AuthenticationSchemeOptions, SimpleAuthenticationHandler>(SimpleAuthenticationDefaults.AuthenticationScheme, _ => { });
         }
     }
 }

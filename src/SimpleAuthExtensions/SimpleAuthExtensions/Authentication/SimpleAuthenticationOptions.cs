@@ -1,11 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.IdentityModel.Tokens;
-
-namespace SimpleAuthExtensions.Authentication
+﻿namespace SimpleAuthExtensions.Authentication
 {
-    public class SimpleAuthenticationOptions : AuthenticationSchemeOptions
+    public class SimpleAuthenticationOptions
     {
-        public string Secret { get; set; }
-        public TokenValidationParameters TokenValidationParameters { get; set; }
+        public string AuthApiBaseAddress { get; set; }
     }
 }
