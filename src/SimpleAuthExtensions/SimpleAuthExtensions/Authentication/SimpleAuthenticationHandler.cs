@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using SimpleAuthExtensions.Authentication;
+using SimpleAuthExtensions.Authorization;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
@@ -11,22 +11,22 @@ namespace SimpleAuthExtensions.Authentication
     {
         private const string AuthorizationHeaderName = "Authorization";
         private const string BearerSchemeName = "Bearer";
-        private readonly ISimpleAuthenticationService authenticationService;
+        private readonly ISimpleAuthorizationService authorizationService;
 
         public SimpleAuthenticationHandler(
             IOptionsMonitor<SimpleAuthenticationOptions> options,
             ILoggerFactory logger,
             UrlEncoder encoder,
             ISystemClock clock,
-            ISimpleAuthenticationService authenticationService)
+            ISimpleAuthorizationService authorizationService)
             : base(options, logger, encoder, clock)
         {
-            this.authenticationService = authenticationService;
+            this.authorizationService = authorizationService;
         }
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
-            return await authenticationService.Authenticate(AuthorizationHeaderName, BearerSchemeName, Scheme.Name, Request);
+            return await authorizationService.Authorize(AuthorizationHeaderName, BearerSchemeName, Scheme.Name, Request);
         }
     }
 }

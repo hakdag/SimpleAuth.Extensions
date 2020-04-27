@@ -9,18 +9,18 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace SimpleAuthExtensions.Authentication
+namespace SimpleAuthExtensions.Authorization
 {
-    public class SimpleAuthenticationService : ISimpleAuthenticationService
+    public class SimpleAuthorizationService : ISimpleAuthorizationService
     {
         private readonly IAuthorizationClient authorizationClient;
 
-        public SimpleAuthenticationService(IAuthorizationClient authorizationClient)
+        public SimpleAuthorizationService(IAuthorizationClient authorizationClient)
         {
             this.authorizationClient = authorizationClient;
         }
 
-        public async Task<AuthenticateResult> Authenticate(string authorizationHeaderName, string bearerSchemeName, string schemeName, HttpRequest request)
+        public async Task<AuthenticateResult> Authorize(string authorizationHeaderName, string bearerSchemeName, string schemeName, HttpRequest request)
         {
             if (!request.Headers.ContainsKey(authorizationHeaderName))
             {
