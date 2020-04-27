@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
+using SimpleAuthExtensions.Authentication;
 using SimpleAuthExtensions.Service;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace SimpleAuthExtensions
+namespace SimpleAuthExtensions.Authentication
 {
     public class SimpleAuthenticationService : ISimpleAuthenticationService
     {

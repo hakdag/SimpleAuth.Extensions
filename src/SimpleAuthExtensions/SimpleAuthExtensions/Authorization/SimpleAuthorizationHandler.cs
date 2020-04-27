@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SimpleAuthExtensions
+namespace SimpleAuthExtensions.Authorization
 {
     public class SimpleRequirement : IAuthorizationRequirement
     {

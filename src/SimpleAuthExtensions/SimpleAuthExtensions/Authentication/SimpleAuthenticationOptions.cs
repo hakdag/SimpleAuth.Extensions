@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.IdentityModel.Tokens;
 
-namespace SimpleAuthExtensions
+namespace SimpleAuthExtensions.Authentication
 {
     public class SimpleAuthenticationOptions : AuthenticationSchemeOptions
     {

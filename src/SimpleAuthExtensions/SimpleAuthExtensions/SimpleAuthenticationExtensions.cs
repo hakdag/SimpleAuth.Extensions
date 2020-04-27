@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using SimpleAuthExtensions.Authentication;
 using SimpleAuthExtensions.Service;
 using System;
 

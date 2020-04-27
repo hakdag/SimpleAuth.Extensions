@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using SimpleAuthExtensions.Authentication;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
-namespace SimpleAuthExtensions
+namespace SimpleAuthExtensions.Authentication
 {
     public class SimpleAuthenticationHandler : AuthenticationHandler<SimpleAuthenticationOptions>
     {

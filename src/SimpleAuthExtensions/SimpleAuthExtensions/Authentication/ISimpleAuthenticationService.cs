@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 
-namespace SimpleAuthExtensions
+namespace SimpleAuthExtensions.Authentication
 {
     public interface ISimpleAuthenticationService
     {

@@ -1,4 +1,4 @@
-﻿namespace SimpleAuthExtensions
+﻿namespace SimpleAuthExtensions.Authentication
 {
     public static class SimpleAuthenticationDefaults
     {
