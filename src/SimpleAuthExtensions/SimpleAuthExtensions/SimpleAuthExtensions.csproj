@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>0.1.1</Version>
+    <Version>0.1.2</Version>
     <Authors>Hakan Akdag</Authors>
     <Company>Fox Software</Company>
     <Description>SimpleAuth Extensins for Dotnet Core 3.1</Description>
@@ -11,7 +11,7 @@
     <PackageReleaseNotes>Added SimpleAuth base address property.</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <AssemblyVersion>0.1.1.0</AssemblyVersion>
+    <AssemblyVersion>0.1.2.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
