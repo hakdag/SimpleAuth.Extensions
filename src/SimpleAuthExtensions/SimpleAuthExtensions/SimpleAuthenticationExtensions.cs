@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using SimpleAuthExtensions.Authentication;
 using SimpleAuthExtensions.Authorization;
+using SimpleAuthExtensions.Business;
 using SimpleAuthExtensions.Service;
 using System;
 
@@ -20,7 +21,14 @@ namespace SimpleAuthExtensions
             where TAuthService : class, ISimpleAuthorizationService
         {
             builder.Services.AddTransient<ISimpleAuthorizationService, TAuthService>();
-            builder.Services.AddHttpClient<IAuthorizationClient, AuthorizationClient>("AuthorizationClient", conf => conf.BaseAddress = new Uri(simpleAuthenticationOptions.AuthApiBaseAddress));
+            builder.Services.AddHttpClient<IAuthorizationClient, AuthorizationClient>("AuthClient", conf => conf.BaseAddress = new Uri(simpleAuthenticationOptions.AuthApiBaseAddress));
+            builder.Services.AddHttpClient<ILockAccountClient, LockAccountClient>("AuthClient", conf => conf.BaseAddress = new Uri(simpleAuthenticationOptions.AuthApiBaseAddress));
+            builder.Services.AddHttpClient<IUnLockAccountClient, UnLockAccountClient>("AuthClient", conf => conf.BaseAddress = new Uri(simpleAuthenticationOptions.AuthApiBaseAddress));
+            builder.Services.AddHttpClient<IChangePasswordClient, ChangePasswordClient>("AuthClient", conf => conf.BaseAddress = new Uri(simpleAuthenticationOptions.AuthApiBaseAddress));
+            builder.Services.AddHttpClient<IRolesClient, RolesClient>("AuthClient", conf => conf.BaseAddress = new Uri(simpleAuthenticationOptions.AuthApiBaseAddress));
+            builder.Services.AddHttpClient<IUserRoleClient, UserRoleClient>("AuthClient", conf => conf.BaseAddress = new Uri(simpleAuthenticationOptions.AuthApiBaseAddress));
+            builder.Services.AddHttpClient<IUsersClient, UsersClient>("AuthClient", conf => conf.BaseAddress = new Uri(simpleAuthenticationOptions.AuthApiBaseAddress));
+            builder.Services.AddScoped<ISimpleAuthBusiness, SimpleAuthBusiness>();
 
             return builder.AddScheme<AuthenticationSchemeOptions, SimpleAuthenticationHandler>(SimpleAuthenticationDefaults.AuthenticationScheme, _ => { });
         }
