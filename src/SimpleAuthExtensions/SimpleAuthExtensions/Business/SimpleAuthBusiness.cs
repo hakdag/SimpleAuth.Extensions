@@ -12,6 +12,9 @@ namespace SimpleAuthExtensions.Business
         private readonly IRolesClient rolesClient;
         private readonly IUserRoleClient userRoleClient;
         private readonly IUsersClient usersClient;
+        private readonly IPasswordResetClient passwordResetClient;
+        private readonly IGeneratePasswordResetKeyClient generatePasswordResetKeyClient;
+        private readonly IValidatePasswordResetKeyClient validatePasswordResetKeyClient;
 
         public SimpleAuthBusiness(
             ILockAccountClient lockAccountClient,
@@ -19,7 +22,10 @@ namespace SimpleAuthExtensions.Business
             IChangePasswordClient changePasswordClient,
             IRolesClient rolesClient,
             IUserRoleClient userRoleClient,
-            IUsersClient usersClient)
+            IUsersClient usersClient,
+            IPasswordResetClient passwordResetClient,
+            IGeneratePasswordResetKeyClient generatePasswordResetKeyClient,
+            IValidatePasswordResetKeyClient validatePasswordResetKeyClient)
         {
             this.lockAccountClient = lockAccountClient;
             this.unlockAccountClient = unlockAccountClient;
@@ -27,6 +33,9 @@ namespace SimpleAuthExtensions.Business
             this.rolesClient = rolesClient;
             this.userRoleClient = userRoleClient;
             this.usersClient = usersClient;
+            this.passwordResetClient = passwordResetClient;
+            this.generatePasswordResetKeyClient = generatePasswordResetKeyClient;
+            this.validatePasswordResetKeyClient = validatePasswordResetKeyClient;
         }
 
         public async Task<ResponseResult> ChangePassword(string userName, string oldPassword, string password, string passwordConfirm)
@@ -65,6 +74,14 @@ namespace SimpleAuthExtensions.Business
         public async Task<ResponseResult> UpdateUser(UpdateUserVM user) => await usersClient.UpdateAsync(user);
 
         public async Task<ResponseResult> DeleteUser(long id) => await usersClient.DeleteAsync(id);
+        #endregion
+
+        #region Password Reset
+        public async Task<PasswordResetKeyResponse> GeneratePasswordResetKey(GeneratePasswordResetKeyVM model) => await generatePasswordResetKeyClient.PostAsync(model);
+
+        public async Task<ResponseResult> ValidatePasswordResetKey(ValidatePasswordResetKeyVM model) => await validatePasswordResetKeyClient.PostAsync(model);
+
+        public async Task<ResponseResult> PasswordReset(PasswordResetVM model) => await passwordResetClient.PostAsync(model);
         #endregion
     }
 }

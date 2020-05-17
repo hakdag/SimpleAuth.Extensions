@@ -27,5 +27,10 @@ namespace SimpleAuthExtensions.Business
         Task<ResponseResult> CreateUser(CreateUserVM user);
         Task<ResponseResult> UpdateUser(UpdateUserVM user);
         Task<ResponseResult> DeleteUser(long id);
+
+        // Password Reset
+        Task<PasswordResetKeyResponse> GeneratePasswordResetKey(GeneratePasswordResetKeyVM model);
+        Task<ResponseResult> ValidatePasswordResetKey(ValidatePasswordResetKeyVM model);
+        Task<ResponseResult> PasswordReset(PasswordResetVM model);
     }
 }
