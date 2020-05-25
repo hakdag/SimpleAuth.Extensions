@@ -32,5 +32,20 @@ namespace SimpleAuthExtensions.Business
         Task<PasswordResetKeyResponse> GeneratePasswordResetKey(GeneratePasswordResetKeyVM model);
         Task<ResponseResult> ValidatePasswordResetKey(ValidatePasswordResetKeyVM model);
         Task<ResponseResult> PasswordReset(PasswordResetVM model);
+
+        // User Role
+        Task<ICollection<PermissionVM>> GetPermissions();
+        Task<PermissionVM> GetPermission(long id);
+        Task<ResponseResult> CreatePermission(CreatePermissionVM permission);
+        Task<ResponseResult> UpdatePermission(UpdatePermissionVM permission);
+        Task<ResponseResult> DeletePermission(long id);
+
+        // Role Permission
+        Task<ResponseResult> AddPermissionToRole(RolePermissionVM rolePermission);
+        Task<ResponseResult> RemovePermissionFromRole(RolePermissionVM rolePermission);
+
+        // User Permission
+        Task<ResponseResult> AddPermissionToUser(UserPermissionVM userPermission);
+        Task<ResponseResult> RemovePermissionFromUser(UserPermissionVM userPermission);
     }
 }

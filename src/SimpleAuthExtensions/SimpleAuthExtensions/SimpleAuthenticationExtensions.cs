@@ -28,6 +28,11 @@ namespace SimpleAuthExtensions
             builder.Services.AddHttpClient<IRolesClient, RolesClient>("AuthClient", conf => conf.BaseAddress = new Uri(simpleAuthenticationOptions.AuthApiBaseAddress));
             builder.Services.AddHttpClient<IUserRoleClient, UserRoleClient>("AuthClient", conf => conf.BaseAddress = new Uri(simpleAuthenticationOptions.AuthApiBaseAddress));
             builder.Services.AddHttpClient<IUsersClient, UsersClient>("AuthClient", conf => conf.BaseAddress = new Uri(simpleAuthenticationOptions.AuthApiBaseAddress));
+
+            builder.Services.AddHttpClient<IPermissionsClient, PermissionsClient>("AuthClient", conf => conf.BaseAddress = new Uri(simpleAuthenticationOptions.AuthApiBaseAddress));
+            builder.Services.AddHttpClient<IRolePermissionClient, RolePermissionClient>("AuthClient", conf => conf.BaseAddress = new Uri(simpleAuthenticationOptions.AuthApiBaseAddress));
+            builder.Services.AddHttpClient<IUserPermissionClient, UserPermissionClient>("AuthClient", conf => conf.BaseAddress = new Uri(simpleAuthenticationOptions.AuthApiBaseAddress));
+
             builder.Services.AddHttpClient<IPasswordResetClient, PasswordResetClient>("AuthClient", conf => conf.BaseAddress = new Uri(simpleAuthenticationOptions.AuthApiBaseAddress));
             builder.Services.AddHttpClient<IGeneratePasswordResetKeyClient, GeneratePasswordResetKeyClient>("AuthClient", conf => conf.BaseAddress = new Uri(simpleAuthenticationOptions.AuthApiBaseAddress));
             builder.Services.AddHttpClient<IValidatePasswordResetKeyClient, ValidatePasswordResetKeyClient>("AuthClient", conf => conf.BaseAddress = new Uri(simpleAuthenticationOptions.AuthApiBaseAddress));

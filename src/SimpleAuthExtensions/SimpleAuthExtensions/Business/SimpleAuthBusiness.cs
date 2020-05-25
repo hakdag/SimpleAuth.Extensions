@@ -12,6 +12,9 @@ namespace SimpleAuthExtensions.Business
         private readonly IRolesClient rolesClient;
         private readonly IUserRoleClient userRoleClient;
         private readonly IUsersClient usersClient;
+        private readonly IPermissionsClient permissionsClient;
+        private readonly IRolePermissionClient rolePermissionClient;
+        private readonly IUserPermissionClient userPermissionClient;
         private readonly IPasswordResetClient passwordResetClient;
         private readonly IGeneratePasswordResetKeyClient generatePasswordResetKeyClient;
         private readonly IValidatePasswordResetKeyClient validatePasswordResetKeyClient;
@@ -23,6 +26,9 @@ namespace SimpleAuthExtensions.Business
             IRolesClient rolesClient,
             IUserRoleClient userRoleClient,
             IUsersClient usersClient,
+            IPermissionsClient permissionsClient,
+            IRolePermissionClient rolePermissionClient,
+            IUserPermissionClient userPermissionClient,
             IPasswordResetClient passwordResetClient,
             IGeneratePasswordResetKeyClient generatePasswordResetKeyClient,
             IValidatePasswordResetKeyClient validatePasswordResetKeyClient)
@@ -33,6 +39,9 @@ namespace SimpleAuthExtensions.Business
             this.rolesClient = rolesClient;
             this.userRoleClient = userRoleClient;
             this.usersClient = usersClient;
+            this.permissionsClient = permissionsClient;
+            this.rolePermissionClient = rolePermissionClient;
+            this.userPermissionClient = userPermissionClient;
             this.passwordResetClient = passwordResetClient;
             this.generatePasswordResetKeyClient = generatePasswordResetKeyClient;
             this.validatePasswordResetKeyClient = validatePasswordResetKeyClient;
@@ -82,6 +91,30 @@ namespace SimpleAuthExtensions.Business
         public async Task<ResponseResult> ValidatePasswordResetKey(ValidatePasswordResetKeyVM model) => await validatePasswordResetKeyClient.PostAsync(model);
 
         public async Task<ResponseResult> PasswordReset(PasswordResetVM model) => await passwordResetClient.PostAsync(model);
+        #endregion
+
+        #region Permissions
+        public async Task<ICollection<PermissionVM>> GetPermissions() => await permissionsClient.GetAllAsync();
+
+        public async Task<PermissionVM> GetPermission(long id) => await permissionsClient.GetAsync(id);
+
+        public async Task<ResponseResult> CreatePermission(CreatePermissionVM permission) => await permissionsClient.CreateAsync(permission);
+
+        public async Task<ResponseResult> UpdatePermission(UpdatePermissionVM permission) => await permissionsClient.UpdateAsync(permission);
+
+        public async Task<ResponseResult> DeletePermission(long id) => await permissionsClient.DeleteAsync(id);
+        #endregion
+
+        #region Role Permission
+        public async Task<ResponseResult> AddPermissionToRole(RolePermissionVM rolePermission) => await rolePermissionClient.CreateAsync(rolePermission);
+
+        public async Task<ResponseResult> RemovePermissionFromRole(RolePermissionVM rolePermission) => await rolePermissionClient.DeleteAsync(rolePermission);
+        #endregion
+
+        #region User Permission
+        public async Task<ResponseResult> AddPermissionToUser(UserPermissionVM userPermission) => await userPermissionClient.CreateAsync(userPermission);
+
+        public async Task<ResponseResult> RemovePermissionFromUser(UserPermissionVM userPermission) => await userPermissionClient.DeleteAsync(userPermission);
         #endregion
     }
 }
