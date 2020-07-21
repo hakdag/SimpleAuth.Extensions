@@ -11,6 +11,7 @@ namespace SimpleAuthExtensions.Authentication
     {
         private const string AuthorizationHeaderName = "Authorization";
         private const string BearerSchemeName = "Bearer";
+        private bool AuthenticateSucceeded = false;
         private readonly ISimpleAuthorizationService authorizationService;
 
         public SimpleAuthenticationHandler(
@@ -26,7 +27,18 @@ namespace SimpleAuthExtensions.Authentication
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
-            return await authorizationService.Authorize(AuthorizationHeaderName, BearerSchemeName, Scheme.Name, Request);
+            var result = await authorizationService.Authorize(AuthorizationHeaderName, BearerSchemeName, Scheme.Name, Request);
+            AuthenticateSucceeded = result.Succeeded;
+            return result;
+        }
+
+        protected override Task HandleChallengeAsync(AuthenticationProperties properties)
+        {
+            if (!AuthenticateSucceeded)
+            {
+                Response.StatusCode = 401;
+            }
+            return Task.CompletedTask;
         }
     }
 }

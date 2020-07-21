@@ -6,6 +6,7 @@ namespace SimpleAuthExtensions.Business
 {
     public class SimpleAuthBusiness : ISimpleAuthBusiness
     {
+        private readonly IAuthenticationClient authenticationClient;
         private readonly ILockAccountClient lockAccountClient;
         private readonly IUnLockAccountClient unlockAccountClient;
         private readonly IChangePasswordClient changePasswordClient;
@@ -20,6 +21,7 @@ namespace SimpleAuthExtensions.Business
         private readonly IValidatePasswordResetKeyClient validatePasswordResetKeyClient;
 
         public SimpleAuthBusiness(
+            IAuthenticationClient authenticationClient,
             ILockAccountClient lockAccountClient,
             IUnLockAccountClient unlockAccountClient,
             IChangePasswordClient changePasswordClient,
@@ -33,6 +35,7 @@ namespace SimpleAuthExtensions.Business
             IGeneratePasswordResetKeyClient generatePasswordResetKeyClient,
             IValidatePasswordResetKeyClient validatePasswordResetKeyClient)
         {
+            this.authenticationClient = authenticationClient;
             this.lockAccountClient = lockAccountClient;
             this.unlockAccountClient = unlockAccountClient;
             this.changePasswordClient = changePasswordClient;
@@ -54,6 +57,20 @@ namespace SimpleAuthExtensions.Business
         public async Task<ResponseResult> LockAccount(long userId) => await lockAccountClient.PutAsync(new LockAccountVM { UserId = userId });
 
         public async Task<ResponseResult> UnLockAccount(long userId) => await unlockAccountClient.PutAsync(new LockAccountVM { UserId = userId });
+
+        public async Task<ResponseResult> LogoutUser(string token)
+        {
+            try
+            {
+                await authenticationClient.LogoutAsync(new LogoutModel { Token = token });
+            }
+            catch (ApiException<ProblemDetails> exc)
+            {
+                return new ResponseResult { Success = false, Messages = new [] { exc.Response } };
+            }
+
+            return new ResponseResult { Success = true };
+        }
 
         #region Roles
         public async Task<ICollection<RoleVM>> GetRoles() => await rolesClient.GetAllAsync();

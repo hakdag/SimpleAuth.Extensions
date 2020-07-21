@@ -5,6 +5,7 @@ using SimpleAuthExtensions.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -56,9 +57,13 @@ namespace SimpleAuthExtensions.Authorization
 
                 return AuthenticateResult.Fail("Unauthorized");
             }
-            catch (Exception ex)
+            catch (ApiException exc)
             {
-                return AuthenticateResult.Fail(ex.Message);
+                return AuthenticateResult.Fail(exc);
+            }
+            catch (Exception exc)
+            {
+                return AuthenticateResult.Fail(exc.Message);
             }
         }
 

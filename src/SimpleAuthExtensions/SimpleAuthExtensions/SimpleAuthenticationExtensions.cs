@@ -20,22 +20,24 @@ namespace SimpleAuthExtensions
         public static AuthenticationBuilder AddSimpleAuth<TAuthService>(this AuthenticationBuilder builder, SimpleAuthenticationOptions simpleAuthenticationOptions)
             where TAuthService : class, ISimpleAuthorizationService
         {
+            var authApiBaseAddressUri = new Uri(simpleAuthenticationOptions.AuthApiBaseAddress);
             builder.Services.AddTransient<ISimpleAuthorizationService, TAuthService>();
-            builder.Services.AddHttpClient<IAuthorizationClient, AuthorizationClient>("AuthClient", conf => conf.BaseAddress = new Uri(simpleAuthenticationOptions.AuthApiBaseAddress));
-            builder.Services.AddHttpClient<ILockAccountClient, LockAccountClient>("AuthClient", conf => conf.BaseAddress = new Uri(simpleAuthenticationOptions.AuthApiBaseAddress));
-            builder.Services.AddHttpClient<IUnLockAccountClient, UnLockAccountClient>("AuthClient", conf => conf.BaseAddress = new Uri(simpleAuthenticationOptions.AuthApiBaseAddress));
-            builder.Services.AddHttpClient<IChangePasswordClient, ChangePasswordClient>("AuthClient", conf => conf.BaseAddress = new Uri(simpleAuthenticationOptions.AuthApiBaseAddress));
-            builder.Services.AddHttpClient<IRolesClient, RolesClient>("AuthClient", conf => conf.BaseAddress = new Uri(simpleAuthenticationOptions.AuthApiBaseAddress));
-            builder.Services.AddHttpClient<IUserRoleClient, UserRoleClient>("AuthClient", conf => conf.BaseAddress = new Uri(simpleAuthenticationOptions.AuthApiBaseAddress));
-            builder.Services.AddHttpClient<IUsersClient, UsersClient>("AuthClient", conf => conf.BaseAddress = new Uri(simpleAuthenticationOptions.AuthApiBaseAddress));
+            builder.Services.AddHttpClient<IAuthorizationClient, AuthorizationClient>("AuthClient", conf => conf.BaseAddress = authApiBaseAddressUri);
+            builder.Services.AddHttpClient<IAuthenticationClient, AuthenticationClient>("AuthClient", conf => conf.BaseAddress = authApiBaseAddressUri);
+            builder.Services.AddHttpClient<ILockAccountClient, LockAccountClient>("AuthClient", conf => conf.BaseAddress = authApiBaseAddressUri);
+            builder.Services.AddHttpClient<IUnLockAccountClient, UnLockAccountClient>("AuthClient", conf => conf.BaseAddress = authApiBaseAddressUri);
+            builder.Services.AddHttpClient<IChangePasswordClient, ChangePasswordClient>("AuthClient", conf => conf.BaseAddress = authApiBaseAddressUri);
+            builder.Services.AddHttpClient<IRolesClient, RolesClient>("AuthClient", conf => conf.BaseAddress = authApiBaseAddressUri);
+            builder.Services.AddHttpClient<IUserRoleClient, UserRoleClient>("AuthClient", conf => conf.BaseAddress = authApiBaseAddressUri);
+            builder.Services.AddHttpClient<IUsersClient, UsersClient>("AuthClient", conf => conf.BaseAddress = authApiBaseAddressUri);
 
-            builder.Services.AddHttpClient<IPermissionsClient, PermissionsClient>("AuthClient", conf => conf.BaseAddress = new Uri(simpleAuthenticationOptions.AuthApiBaseAddress));
-            builder.Services.AddHttpClient<IRolePermissionClient, RolePermissionClient>("AuthClient", conf => conf.BaseAddress = new Uri(simpleAuthenticationOptions.AuthApiBaseAddress));
-            builder.Services.AddHttpClient<IUserPermissionClient, UserPermissionClient>("AuthClient", conf => conf.BaseAddress = new Uri(simpleAuthenticationOptions.AuthApiBaseAddress));
+            builder.Services.AddHttpClient<IPermissionsClient, PermissionsClient>("AuthClient", conf => conf.BaseAddress = authApiBaseAddressUri);
+            builder.Services.AddHttpClient<IRolePermissionClient, RolePermissionClient>("AuthClient", conf => conf.BaseAddress = authApiBaseAddressUri);
+            builder.Services.AddHttpClient<IUserPermissionClient, UserPermissionClient>("AuthClient", conf => conf.BaseAddress = authApiBaseAddressUri);
 
-            builder.Services.AddHttpClient<IPasswordResetClient, PasswordResetClient>("AuthClient", conf => conf.BaseAddress = new Uri(simpleAuthenticationOptions.AuthApiBaseAddress));
-            builder.Services.AddHttpClient<IGeneratePasswordResetKeyClient, GeneratePasswordResetKeyClient>("AuthClient", conf => conf.BaseAddress = new Uri(simpleAuthenticationOptions.AuthApiBaseAddress));
-            builder.Services.AddHttpClient<IValidatePasswordResetKeyClient, ValidatePasswordResetKeyClient>("AuthClient", conf => conf.BaseAddress = new Uri(simpleAuthenticationOptions.AuthApiBaseAddress));
+            builder.Services.AddHttpClient<IPasswordResetClient, PasswordResetClient>("AuthClient", conf => conf.BaseAddress = authApiBaseAddressUri);
+            builder.Services.AddHttpClient<IGeneratePasswordResetKeyClient, GeneratePasswordResetKeyClient>("AuthClient", conf => conf.BaseAddress = authApiBaseAddressUri);
+            builder.Services.AddHttpClient<IValidatePasswordResetKeyClient, ValidatePasswordResetKeyClient>("AuthClient", conf => conf.BaseAddress = authApiBaseAddressUri);
             builder.Services.AddScoped<ISimpleAuthBusiness, SimpleAuthBusiness>();
 
             return builder.AddScheme<AuthenticationSchemeOptions, SimpleAuthenticationHandler>(SimpleAuthenticationDefaults.AuthenticationScheme, _ => { });
