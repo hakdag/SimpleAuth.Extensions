@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SimpleAuthExtensions.Authorization;
+using SimpleAuthExtensions.Service;
+using System.Net;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
@@ -29,6 +31,19 @@ namespace SimpleAuthExtensions.Authentication
         {
             var result = await authorizationService.Authorize(AuthorizationHeaderName, BearerSchemeName, Scheme.Name, Request);
             AuthenticateSucceeded = result.Succeeded;
+            if (!result.Succeeded && result.Failure != null && !result.Failure.Message.Equals("Unauthorized"))
+            {
+                var exc = result.Failure as ApiException<ProblemDetails>;
+                Response.StatusCode = exc.StatusCode;
+            }
+            else if (result.Succeeded)
+            {
+                Response.StatusCode = (int)HttpStatusCode.Created;
+            }
+            else
+            {
+                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            }
             return result;
         }
 
@@ -36,7 +51,7 @@ namespace SimpleAuthExtensions.Authentication
         {
             if (!AuthenticateSucceeded)
             {
-                Response.StatusCode = 401;
+                Response.StatusCode = (int)HttpStatusCode.Unauthorized;
             }
             return Task.CompletedTask;
         }

@@ -57,7 +57,7 @@ namespace SimpleAuthExtensions.Authorization
 
                 return AuthenticateResult.Fail("Unauthorized");
             }
-            catch (ApiException exc)
+            catch (ApiException<ProblemDetails> exc)
             {
                 return AuthenticateResult.Fail(exc);
             }

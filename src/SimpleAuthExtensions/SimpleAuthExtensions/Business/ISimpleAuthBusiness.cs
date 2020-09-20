@@ -9,6 +9,7 @@ namespace SimpleAuthExtensions.Business
         Task<ResponseResult> LockAccount(long userId);
         Task<ResponseResult> UnLockAccount(long userId);
         Task<ResponseResult> ChangePassword(string userName, string oldPassword, string password, string passwordConfirm);
+        Task<AuthenticationToken> LoginUser(string userName, string password);
         Task<ResponseResult> LogoutUser(string token);
 
         // Roles

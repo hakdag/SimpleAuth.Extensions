@@ -1,4 +1,5 @@
 ﻿using SimpleAuthExtensions.Service;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -58,6 +59,10 @@ namespace SimpleAuthExtensions.Business
 
         public async Task<ResponseResult> UnLockAccount(long userId) => await unlockAccountClient.PutAsync(new LockAccountVM { UserId = userId });
 
+        public async Task<AuthenticationToken> LoginUser(string userName, string password)
+            =>
+                await authenticationClient.LoginAsync(new AuthenticateModel { Username = userName, Password = password });
+
         public async Task<ResponseResult> LogoutUser(string token)
         {
             try
@@ -66,7 +71,11 @@ namespace SimpleAuthExtensions.Business
             }
             catch (ApiException<ProblemDetails> exc)
             {
-                return new ResponseResult { Success = false, Messages = new [] { exc.Response } };
+                return new ResponseResult { Success = true, Messages = new [] { exc.Response } };
+            }
+            catch (ApiException exc)
+            {
+                return new ResponseResult { Success = true, Messages = new[] { exc.Response } };
             }
 
             return new ResponseResult { Success = true };
